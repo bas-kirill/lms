@@ -35,6 +35,8 @@
     }
   },
   "rules": {
+    // "https://github.com/axios/axios/issues/5738",
+    "import/named": 0,
     "react/prop-types": "off",
     "@typescript-eslint/no-var-requires": "off"
   }

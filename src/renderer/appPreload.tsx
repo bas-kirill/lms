@@ -1,13 +1,12 @@
 // Say something
-console.log('[ERWT] : Preload execution started');
+console.log('[LMS] : Preload execution started');
 
 // Get versions
 window.addEventListener('DOMContentLoaded', () => {
-  const app = document.getElementById('app');
   const { env } = process;
   const versions: Record<string, unknown> = {};
 
-  // ERWT Package version
+  // LMS Package version
   versions['erwt'] = env['npm_package_version'];
   versions['license'] = env['npm_package_license'];
 
@@ -27,7 +26,4 @@ window.addEventListener('DOMContentLoaded', () => {
     const v = env['npm_package_devDependencies_' + type];
     if (v) versions[type] = v.replace('^', '+');
   }
-
-  // Set versions to app data
-  app.setAttribute('data-versions', JSON.stringify(versions));
 });

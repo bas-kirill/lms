@@ -8,9 +8,9 @@ module.exports = {
     // Create asar archive for main, renderer process files
     asar: true,
     // Set executable name
-    executableName: 'ERWT Boilerplate',
+    executableName: 'LMS',
     // Set application copyright
-    appCopyright: 'Copyright (C) 2021 Codesbiome, Guasam',
+    appCopyright: 'Copyright (C) 2024 Kiryuxa Bas',
     // Set application icon
     icon: path.resolve('assets/images/appIcon.ico'),
   },
@@ -50,7 +50,7 @@ module.exports = {
       config: {
         // Fix content-security-policy error when image or video src isn't same origin
         // Remove 'unsafe-eval' to get rid of console warning in development mode.
-        devContentSecurityPolicy: `default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-inline' data:`,
+        devContentSecurityPolicy: `connect-src 'self' * 'unsafe-eval'`,
         // Ports
         port: 3000, // Webpack Dev Server port
         loggerPort: 9000, // Logger port
@@ -64,7 +64,7 @@ module.exports = {
           entryPoints: [
             {
               // Window process name
-              name: 'app_window',
+              name: 'login',
               // React Hot Module Replacement (HMR)
               rhmr: 'react-hot-loader/patch',
               // HTML index file template

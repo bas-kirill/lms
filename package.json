@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-typescript-webpack-2023",
-  "productName": "ERWT Boilerplate",
+  "name": "nup-lms",
+  "productName": "NUP LMS",
   "version": "7.3.2",
-  "description": "Custom boilerplate for writing Desktop Applications using Electron, React, Webpack, TypeScript in 2023",
+  "description": "NUP LMS for Desktop",
   "main": ".webpack/main",
   "scripts": {
     "start": "cross-env NODE_ENV=development electron-forge start",
@@ -12,29 +12,22 @@
     "lint": "eslint src/ --ext .ts,.js,.tsx,.jsx"
   },
   "keywords": [
-    "electron boilerplate",
-    "minimal",
-    "electron-webpack",
-    "electron-react",
-    "electron-typescript",
-    "hmr",
-    "boilerplate",
-    "2023",
-    "ERWT"
+    "nup",
+    "lms"
   ],
   "author": {
-    "name": "codesbiome",
-    "url": "https://github.com/codesbiome"
+    "name": "Kiryuxa Bas",
+    "url": "https://github.com/bas-kirill"
   },
   "contributors": [
     {
-      "name": "guasam",
-      "url": "https://github.com/guasam"
+      "name": "Kiryuxa Bas",
+      "url": "https://github.com/bas-kirill"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/codesbiome/electron-react-webpack-typescript-2023"
+    "url": "https://github.com/bas-kirill/nup-lms"
   },
   "license": "MIT",
   "config": {
@@ -52,6 +45,8 @@
     "@types/node": "^18.15.10",
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
@@ -78,8 +73,31 @@
     "webpack": "^5.76.3"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
+    "react-router": "^6.23.0",
+    "react-router-dom": "^6.23.0"
+  },
+  "plugins": [
+    [
+      "@electron-forge/plugin-webpack",
+      {
+        "mainConfig": "./webpack.main.config.js",
+        "devContentSecurityPolicy": "connect-src 'self' https://api.myapp.com 'unsafe-eval'",
+        "renderer": {
+          "config": "./webpack.renderer.config.js",
+          "entryPoints": [
+            {
+              "html": "./src/index.html",
+              "js": "./src/renderer.ts",
+              "name": "main_window"
+            }
+          ]
+        }
+      }
+    ]
+  ]
 }
