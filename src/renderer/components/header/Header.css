@@ -1,0 +1,15 @@
+header {
+    background-color: #0056b3;
+    display: flex;
+}
+
+header > div {
+    text-align: center;
+    padding: 10px;
+    background-color: red;
+}
+
+#dashboard-button-wrapper {
+    margin-left: auto;
+}
+

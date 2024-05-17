@@ -1,0 +1,14 @@
+#student-dashboard-wrapper, #admin-dashboard-wrapper, #faculty-dashboard-wrapper  {
+    background-color: #7f6363;
+    display: flex;
+}
+
+#student-dashboard-wrapper > .calendar {
+    flex: 50%;
+}
+
+#admin-dashboard-wrapper > .active-users-wrapper {
+    background-color: #0056b3;
+    margin-left: auto;
+}
+

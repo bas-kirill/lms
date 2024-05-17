@@ -7,10 +7,10 @@ const tryLogin = (user: User) => {
   return axios.post<TryLogin>("https://9a57e3c3-4bca-47ff-8820-6c2b85616b53.mock.pstmn.io/api/login", user);
 };
 
-const LoginPanel: React.FC = () => {
+const Login: React.FC = () => {
   useEffect(() => {
     document.title = "LMS -- Login"
-  });
+  }, []);
 
   const { mutate, isLoading, isError, error } = useMutation(tryLogin)
 
@@ -23,4 +23,4 @@ const LoginPanel: React.FC = () => {
   );
 };
 
-export default LoginPanel;
+export default Login;

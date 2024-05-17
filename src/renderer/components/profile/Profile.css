@@ -1,0 +1,7 @@
+#profile-admin-wrapper {
+    display: flex;
+}
+
+#profile-admin-wrapper > .active-users-wrapper {
+    flex: 50%;
+}

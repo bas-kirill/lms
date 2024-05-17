@@ -25,8 +25,12 @@ export function createAppWindow(): BrowserWindow {
     },
   });
 
+  const loginUrl = "http://localhost:3000/login";
+
   // Load the index.html of the app window.
-  appWindow.loadURL(LOGIN_WEBPACK_ENTRY);
+  // appWindow.loadURL(LOGIN_WEBPACK_ENTRY);
+  appWindow.loadURL(loginUrl);
+
 
   appWindow.on('ready-to-show', () => appWindow.show());
 
