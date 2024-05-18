@@ -10,9 +10,7 @@ const Profile = () => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    // const jwtRaw = window.localStorage.getItem("auth_token");
-    const jwtRaw = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NDY1NTU3MTJ9.9u1MaV3-WcOE3i0y7MvsNHuLW-rSv0t2TJhx_A9N6eQ";
-    // jwt server secret key: abacaba
+    const jwtRaw = window.localStorage.getItem("auth_token");
     if (jwtRaw === null) {
       setAuthenticated(false);
       return;
@@ -20,8 +18,7 @@ const Profile = () => {
 
     setAuthenticated(true);
     const jwt = jwtDecode<JwtPayload>(jwtRaw);
-    console.log(jwt);
-    setRole(jwt.role);
+    setRole(jwt.sub);
   });
 
   if (!authenticated) {

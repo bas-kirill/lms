@@ -1,3 +1,0 @@
-interface TryLogin {
-  status: string,
-}

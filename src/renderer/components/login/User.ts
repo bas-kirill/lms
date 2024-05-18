@@ -1,4 +1,6 @@
 interface User {
-  login: string,
+  username: string,
   password: string,
 }
+
+export default User;

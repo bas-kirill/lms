@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import LoginForm from './LoginForm';
+import User from '@components/login/User';
+import Jwt from '@components/login/Jwt';
 
 const tryLogin = (user: User) => {
-  return axios.post<TryLogin>("https://9a57e3c3-4bca-47ff-8820-6c2b85616b53.mock.pstmn.io/api/login", user);
+  return axios.post<Jwt>("http://localhost:8080/api/auth/login", user);
 };
 
 const Login: React.FC = () => {
