@@ -4,10 +4,26 @@ import { Link } from 'react-router-dom';
 import Login from '@components/login/Login';
 import JwtPayload from "../../jwt/JwtPayload";
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+
+export interface Profile {
+  fullName: string
+  role: string
+  courses: Course[]
+}
+
+export interface Course {
+  code: string
+  name: string
+}
+
 
 const Profile = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState("");
+  const [profileFullName, setProfileFullName] = useState("");
+  const [profileRole, setProfileRole] = useState("");
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     const jwtRaw = window.localStorage.getItem("auth_token");
@@ -18,7 +34,23 @@ const Profile = () => {
 
     setAuthenticated(true);
     const jwt = jwtDecode<JwtPayload>(jwtRaw);
-    setRole(jwt.sub);
+    setRole(jwt.role);
+  });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await axios.get<Profile>('http://localhost:8080/api/profile', {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
+        },
+      });
+      setProfileFullName(response.data.fullName);
+      setProfileRole(response.data.role);
+      setCourses(response.data.courses);
+      console.log(response);
+    }
+
+    fetchProfile();
   });
 
   if (!authenticated) {
@@ -28,14 +60,15 @@ const Profile = () => {
   return (
     <div>
       <Header />
-      {role === "student" && (
+      {role === "ROLE_STUDENT" && (
         <div>
-          <h1><Link to={"/profile"}>Kiryuxa Bas</Link></h1>
-          <div>Name: %s</div>
-          <div>Surname: %s</div>
-          <div>Role: %s</div>
+          <h1><Link to={"/profile"}>{profileFullName}</Link></h1>
+          <div>Role: {profileRole}</div>
           <div>Courses:</div>
           <ul>
+            {courses.map((course, index) => (
+              <li key={index}>{course.code} -- {course.name}</li>
+            ))}
             <li>CS100: Programming Principles II</li>
           </ul>
         </div>
