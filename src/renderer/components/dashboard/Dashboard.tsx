@@ -8,15 +8,24 @@ import './Dashboard.css';
 import Users from '@components/users/ActiveUsers';
 import JwtPayload from '../../jwt/JwtPayload';
 import ActiveCourses from '@components/courses/ActiveCourses';
+import axios from 'axios';
+
+interface Me {
+  fullName: string,
+}
+
+const tryMe = async () => {
+  return await axios.get<Me>('http://localhost:8080/api/me').then(response => response.data);
+};
 
 const Dashboard = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState('');
+  const [fullName, setFullName] = useState('');
 
   useEffect(() => {
-    // const jwtRaw = window.localStorage.getItem("auth_token");
-    const jwtRaw = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiZmFjdWx0eSIsImV4cCI6MTc0NjU1NTcxMn0.rXbobgqtlI2Ad1eiL0dldj6BSdX_17tOQC51QW7w6Pk';
-    // jwt server secret key: abacaba
+    const jwtRaw = window.localStorage.getItem('auth_token');
+
     if (jwtRaw === null) {
       setAuthenticated(false);
       return;
@@ -24,44 +33,56 @@ const Dashboard = () => {
 
     setAuthenticated(true);
     const jwt = jwtDecode<JwtPayload>(jwtRaw);
-    console.log(jwt);
     setRole(jwt.role);
   });
 
-  if (!authenticated) {
-    return (<Login />);
-  }
+  useEffect(() => {
+    const fetchFullName = async () => {
+      const response = await axios.get<Me>('http://localhost:8080/api/me', {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
+        },
+      });
+      setFullName(response.data.fullName);
+    };
+    fetchFullName();
+  }, []);
 
-  return (
-    <div>
-      <Header />
-      {role === 'student' && (
-        <div>
-          <h1>Welcome, Romich Mishura!</h1>
-          <div id='student-dashboard-wrapper'>
-            <Calendar />
-            <Announcements />
-          </div>
+if (!authenticated) {
+  return (<Login />);
+}
+
+return (
+  <div>
+    <Header />
+    {role === 'ROLE_STUDENT' && (
+      <div>
+        <h1>Welcome, {fullName}!</h1>
+        <div id='student-dashboard-wrapper'>
+          <Calendar />
+          <Announcements />
         </div>
-      )}
-      {role === 'admin' && (
-        <div>
-          <h1>Welcome, administrator</h1>
-          <div id='admin-dashboard-wrapper'>
-            <Users />
-          </div>
+      </div>
+    )}
+    {role === 'ROLE_ADMIN' && (
+      <div>
+        <h1>Welcome, {fullName}</h1>
+        <div id='admin-dashboard-wrapper'>
+          <Users />
         </div>
-      )}
-      {role === 'faculty' && (
-        <div>
-          <h1>Welcome, Computer Science Faculty</h1>
-          <div id="faculty-dashboard-wrapper">
-            <ActiveCourses />
-          </div>
+      </div>
+    )}
+    {role === 'ROLE_FACULTY' && (
+      <div>
+        <h1>Welcome, {fullName}</h1>
+        <div id='faculty-dashboard-wrapper'>
+          <ActiveCourses />
         </div>
-      )}
-    </div>
-  );
-};
+      </div>
+    )}
+  </div>
+);
+}
+;
 
 export default Dashboard;

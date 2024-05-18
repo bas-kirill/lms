@@ -18,7 +18,7 @@ const Application: React.FC = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/schedule/2024-5-15" element={<Schedule />} />
+          <Route path="/schedule/:year/:month/:day" element={<Schedule />} />
           <Route path="/course/:courseId" element={<Course />} />
         </Routes>
       </BrowserRouter>

@@ -3,15 +3,15 @@ import Header from '@components/header/Header';
 import Login from '../login/Login';
 import JwtPayload from "../../jwt/JwtPayload";
 import { jwtDecode } from 'jwt-decode';
+import { useParams } from 'react-router';
 
 const Schedule = () => {
+  const { year, month, day } = useParams();
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    // const jwtRaw = window.localStorage.getItem("auth_token");
-    const jwtRaw = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NDY1NTU3MTJ9.9u1MaV3-WcOE3i0y7MvsNHuLW-rSv0t2TJhx_A9N6eQ";
-    // jwt server secret key: abacaba
+    const jwtRaw = window.localStorage.getItem("auth_token");
     if (jwtRaw === null) {
       setAuthenticated(false);
       return;
@@ -19,8 +19,7 @@ const Schedule = () => {
 
     setAuthenticated(true);
     const jwt = jwtDecode<JwtPayload>(jwtRaw);
-    console.log(jwt);
-    setRole(jwt.role);
+    setRole(jwt.sub);
   });
 
   if (!authenticated) {
@@ -30,58 +29,42 @@ const Schedule = () => {
   return (
     <div>
       <Header />
-      <h1>2024-05-15</h1>
+      <h1>{year}-{month}-{day}</h1>
       <div>
         <p>
-          <span>Monday</span> | <button>Add</button>
+          <span>Monday</span>
           <div>
-            <span>13:00 -- Programming Principles II</span> {role==="admin" && (
-            <span>
-              | <button>Edit</button> | <button>Remove</button>
-            </span>
-          )}
+            <span>13:00 -- Programming Principles II</span>
           </div>
           <div>
-            <span>14:00 -- Functional Programming</span> {role==="admin" && (
-            <span>
-              | <button>Edit</button> | <button>Remove</button>
-            </span>
-          )}
+            <span>14:00 -- Functional Programming</span>
           </div>
         </p>
         <p>
-          <span>Monday</span> | <button>Add</button>
+          <span>Monday</span>
         </p>
         <p>
-          <span>Wednesday</span> | <button>Add</button>
+          <span>Wednesday</span>
         </p>
         <p>
-          <span>Thursday</span> | <button>Add</button>
+          <span>Thursday</span>
         </p>
         <p>
-          <span>Friday</span> | <button>Add</button>
+          <span>Friday</span>
         </p>
         <p>
-          <span>Saturday</span> | <button>Add</button>
+          <span>Saturday</span>
         </p>
         <p>
-          <span>Sunday</span> | <button>Add</button>
+          <span>Sunday</span>
         </p>
         <p>
-          <span>Monday</span> | <button>Add</button>
+          <span>Monday</span>
           <div>
-            <span>13:00 -- Programming Principles II</span> {role==="admin" && (
-            <span>
-              | <button>Edit</button> | <button>Remove</button>
-            </span>
-          )}
+            <span>13:00 -- Programming Principles II</span>
           </div>
           <div>
-            <span>14:00 -- Functional Programming</span> {role==="admin" && (
-            <span>
-              | <button>Edit</button> | <button>Remove</button>
-            </span>
-          )}
+            <span>14:00 -- Functional Programming</span>
           </div>
         </p>
       </div>

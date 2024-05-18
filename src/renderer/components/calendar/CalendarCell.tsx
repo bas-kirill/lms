@@ -6,7 +6,7 @@ const CalendarCell = ({ year, month, day }: { year: number, month: number, day: 
   const navigate = useNavigate();
 
   const showSchedule = () => {
-    navigate(`/schedule/${year}-${month}-${day}`);
+    navigate(`/schedule/${year}/${month}/${day}`);
   };
 
   return (
