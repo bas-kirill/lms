@@ -13,6 +13,11 @@ const Header: React.FC<HeaderProps> = ({ role }) => {
         <Link to={'/dashboard'}>Dashboard</Link>
       </div>
       {["ROLE_ADMIN", "ROLE_FACULTY"].includes(role) && (
+        <div>
+          <Link to={'/users'}>Users</Link>
+        </div>
+      )}
+      {["ROLE_ADMIN", "ROLE_FACULTY"].includes(role) && (
         <div id='courses-button-wrapper'>
           <Link to={'/courses'}>Courses</Link>
         </div>
