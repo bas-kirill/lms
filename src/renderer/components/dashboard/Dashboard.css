@@ -3,7 +3,7 @@
     display: flex;
 }
 
-#student-dashboard-wrapper > .calendar {
+#student-dashboard-wrapper, #faculty-dashboard-wrapper > .calendar {
     flex: 50%;
 }
 
