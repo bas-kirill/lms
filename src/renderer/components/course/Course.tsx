@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import Header from '@components/header/Header';
 import { jwtDecode } from 'jwt-decode';
 import JwtPayload from '@renderer/jwt/JwtPayload';
@@ -25,7 +25,8 @@ const Course = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState('');
   const [students, setStudents] = useState<Student[]>([]);
-  const [courseName, setCourseName] = useState<string>("");
+  const [courseName, setCourseName] = useState<string>('');
+  const [studentLoginToAdd, setStudentLoginToAdd] = useState<string>('');
 
   useEffect(() => {
     const jwtRaw = window.localStorage.getItem('auth_token');
@@ -44,7 +45,7 @@ const Course = () => {
     const fetchCourseDetails = async () => {
       const response = await axios.get<CourseDetails>(`http://localhost:8080/api/course/${courseCode}/details`, {
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`
+          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
         },
       });
 
@@ -74,14 +75,38 @@ const Course = () => {
       await axios.delete(`http://localhost:8080/api/course/${courseCode}/students/${login}`, {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
-          Accept: "application/json",
+          Accept: 'application/json',
         },
       });
       setStudents(students.filter(student => student.login !== login));
     } catch (error) {
       console.error('Error deleting student:', error);
     }
-  }
+  };
+
+  const handleAddStudentToCourseSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    const addStudentToCourse = async () => {
+      try {
+        const response = await axios.post<Student>(`http://localhost:8080/api/course/${courseCode}`,
+          {
+            login: studentLoginToAdd,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
+            },
+          });
+        setStudentLoginToAdd(''); // clear text input field
+        setStudents([...students, response.data])
+      } catch (error) {
+        console.error('Error adding student to course:', error);
+      }
+    };
+
+    addStudentToCourse();
+  };
 
   if (!authenticated) {
     return (<Login />);
@@ -91,6 +116,16 @@ const Course = () => {
     <div>
       <Header role={role} />
       <h1>{courseCode} -- {courseName}</h1>
+      <form action={`http://localhost:8080/api/course/${courseCode}`} method='POST'
+            onSubmit={handleAddStudentToCourseSubmit}>
+        <input
+          type='text'
+          placeholder='Student login'
+          value={studentLoginToAdd}
+          onChange={(e) => setStudentLoginToAdd(e.target.value)}
+        />
+        <button type='submit'>Add Student</button>
+      </form>
       {students.length > 0 && (<div>
         Students:
         <ul>
