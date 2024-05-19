@@ -100,6 +100,23 @@ const Profile = () => {
         </div>
       )}
 
+      {role === "ROLE_FACULTY" && (
+        <div>
+          <h1><Link to={"/profile"}>{profileFullName}</Link></h1>
+          <div>Role: {profileRole}</div>
+          {courses.length > 0 && (
+            <div>
+              <div>Courses:</div>
+              <ul>
+                {courses.map((course, index) => (
+                  <li key={index}>{course.code} -- {course.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
     </div>
   );
 };

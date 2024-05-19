@@ -6,19 +6,23 @@ import Login from '@components/login/Login';
 import axios from 'axios';
 import { useParams } from 'react-router';
 
-
 export type Students = Student[]
 
 export interface Student {
   fullName: string;
 }
 
+export interface CourseDetails {
+  courseCode: string;
+  name: string;
+}
 
 const Course = () => {
   const { courseCode } = useParams();
   const [authenticated, setAuthenticated] = useState(false);
   const [role, setRole] = useState('');
   const [students, setStudents] = useState<Student[]>([]);
+  const [courseName, setCourseName] = useState<string>("");
 
   useEffect(() => {
     const jwtRaw = window.localStorage.getItem('auth_token');
@@ -31,6 +35,21 @@ const Course = () => {
     setAuthenticated(true);
     const jwt = jwtDecode<JwtPayload>(jwtRaw);
     setRole(jwt.role);
+  });
+
+  useEffect(() => {
+    const fetchCourseDetails = async () => {
+      const response = await axios.get<CourseDetails>(`http://localhost:8080/api/course/${courseCode}/details`, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`
+        },
+      });
+
+      setCourseName(response.data.name);
+      console.log(response.data);
+    };
+
+    fetchCourseDetails();
   });
 
   useEffect(() => {
@@ -55,7 +74,7 @@ const Course = () => {
   return (
     <div>
       <Header role={role} />
-      <h1>CS100 -- Programming Principles II</h1>
+      <h1>{courseCode} -- {courseName}</h1>
       Students:
       <ul>
         {students.map((student, index) => (

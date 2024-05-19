@@ -14,10 +14,6 @@ interface Me {
   fullName: string,
 }
 
-const tryMe = async () => {
-  return await axios.get<Me>('http://localhost:8080/api/me').then(response => response.data);
-};
-
 const Dashboard = () => {
     const [authenticated, setAuthenticated] = useState(false);
     const [role, setRole] = useState('');
@@ -66,7 +62,7 @@ const Dashboard = () => {
         )}
         {role === 'ROLE_ADMIN' && (
           <div>
-            <h1>Welcome, {fullName}</h1>
+            <h1>Welcome, {fullName}!</h1>
             <div id='admin-dashboard-wrapper'>
               <Users />
             </div>
@@ -74,7 +70,7 @@ const Dashboard = () => {
         )}
         {role === 'ROLE_FACULTY' && (
           <div>
-            <h1>Welcome, {fullName}</h1>
+            <h1>Welcome, {fullName}!</h1>
             <div id='faculty-dashboard-wrapper'>
               <ActiveCourses />
             </div>
