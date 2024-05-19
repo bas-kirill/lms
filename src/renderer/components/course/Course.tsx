@@ -6,6 +6,7 @@ import Login from '@components/login/Login';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import DeleteStudentFromCourseButton from '@components/course/DeleteStudentFromCourseButton';
 
 export type Students = Student[]
 
@@ -68,6 +69,20 @@ const Course = () => {
     fetchCourseStudents();
   }, []);
 
+  const deleteStudentByLogin = async (login: string) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/course/${courseCode}/students/${login}`, {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
+          Accept: "application/json",
+        },
+      });
+      setStudents(students.filter(student => student.login !== login));
+    } catch (error) {
+      console.error('Error deleting student:', error);
+    }
+  }
+
   if (!authenticated) {
     return (<Login />);
   }
@@ -76,12 +91,20 @@ const Course = () => {
     <div>
       <Header role={role} />
       <h1>{courseCode} -- {courseName}</h1>
-      Students:
-      <ul>
-        {students.map((student, index) => (
-          <li key={index}><Link to={`/user/${student.login}`}>{student.fullName}</Link></li>
-        ))}
-      </ul>
+      {students.length > 0 && (<div>
+        Students:
+        <ul>
+          {students.map((student, index) => (
+            <li key={index}>
+              <Link to={`/user/${student.login}`}>
+                {student.fullName}
+              </Link>
+              <DeleteStudentFromCourseButton onDelete={() => deleteStudentByLogin(student.login)} />
+            </li>
+          ))}
+        </ul>
+      </div>)}
+
     </div>
   );
 };
