@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ role }) => {
   return (
     <header>
-      {role === "ROLE_ADMIN" && (
+      {["ROLE_ADMIN", "ROLE_FACULTY"].includes(role) && (
         <div id='courses-button-wrapper'>
           <Link to={'/courses'}>Courses</Link>
         </div>
