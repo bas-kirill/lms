@@ -19,70 +19,70 @@ const tryMe = async () => {
 };
 
 const Dashboard = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [role, setRole] = useState('');
-  const [fullName, setFullName] = useState('');
+    const [authenticated, setAuthenticated] = useState(false);
+    const [role, setRole] = useState('');
+    const [fullName, setFullName] = useState('');
 
-  useEffect(() => {
-    const jwtRaw = window.localStorage.getItem('auth_token');
+    useEffect(() => {
+      const jwtRaw = window.localStorage.getItem('auth_token');
 
-    if (jwtRaw === null) {
-      setAuthenticated(false);
-      return;
+      if (jwtRaw === null) {
+        setAuthenticated(false);
+        return;
+      }
+
+      setAuthenticated(true);
+      const jwt = jwtDecode<JwtPayload>(jwtRaw);
+      setRole(jwt.role);
+    });
+
+    useEffect(() => {
+      const fetchFullName = async () => {
+        const response = await axios.get<Me>('http://localhost:8080/api/me', {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
+          },
+        });
+        setFullName(response.data.fullName);
+      };
+      fetchFullName();
+    }, []);
+
+    if (!authenticated) {
+      return (<Login />);
     }
 
-    setAuthenticated(true);
-    const jwt = jwtDecode<JwtPayload>(jwtRaw);
-    setRole(jwt.role);
-  });
-
-  useEffect(() => {
-    const fetchFullName = async () => {
-      const response = await axios.get<Me>('http://localhost:8080/api/me', {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('auth_token')}`,
-        },
-      });
-      setFullName(response.data.fullName);
-    };
-    fetchFullName();
-  }, []);
-
-if (!authenticated) {
-  return (<Login />);
-}
-
-return (
-  <div>
-    <Header />
-    {role === 'ROLE_STUDENT' && (
+    return (
       <div>
-        <h1>Welcome, {fullName}!</h1>
-        <div id='student-dashboard-wrapper'>
-          <Calendar />
-          <Announcements />
-        </div>
+        <Header role={role} />
+        {role === 'ROLE_STUDENT' && (
+          <div>
+            <h1>Welcome, {fullName}!</h1>
+            <div id='student-dashboard-wrapper'>
+              <Calendar />
+              <Announcements />
+            </div>
+          </div>
+        )}
+        {role === 'ROLE_ADMIN' && (
+          <div>
+            <h1>Welcome, {fullName}</h1>
+            <div id='admin-dashboard-wrapper'>
+              <Users />
+            </div>
+          </div>
+        )}
+        {role === 'ROLE_FACULTY' && (
+          <div>
+            <h1>Welcome, {fullName}</h1>
+            <div id='faculty-dashboard-wrapper'>
+              <ActiveCourses />
+            </div>
+          </div>
+        )}
       </div>
-    )}
-    {role === 'ROLE_ADMIN' && (
-      <div>
-        <h1>Welcome, {fullName}</h1>
-        <div id='admin-dashboard-wrapper'>
-          <Users />
-        </div>
-      </div>
-    )}
-    {role === 'ROLE_FACULTY' && (
-      <div>
-        <h1>Welcome, {fullName}</h1>
-        <div id='faculty-dashboard-wrapper'>
-          <ActiveCourses />
-        </div>
-      </div>
-    )}
-  </div>
-);
-}
+    );
+  }
 ;
 
 export default Dashboard;

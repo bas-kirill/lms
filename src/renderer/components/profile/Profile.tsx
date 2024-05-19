@@ -51,7 +51,7 @@ const Profile = () => {
     }
 
     fetchProfile();
-  });
+  }, []);
 
   if (!authenticated) {
     return (<Login />);
@@ -59,7 +59,7 @@ const Profile = () => {
 
   return (
     <div>
-      <Header />
+      <Header role={role} />
       {role === "ROLE_STUDENT" && (
         <div>
           <h1><Link to={"/profile"}>{profileFullName}</Link></h1>
@@ -74,7 +74,7 @@ const Profile = () => {
         </div>
       )}
 
-      {role === "admin" && (
+      {role === "ROLE_ADMIN" && (
         <div id="profile-admin-wrapper">
           <h1><Link to={"/profile"}>Kiryuxa Bas</Link></h1>
           <form action="/api/user/edit" method="POST">

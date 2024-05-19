@@ -56,7 +56,7 @@ const Schedule = () => {
 
   return (
     <div>
-      <Header />
+      <Header role={role} />
       <h1>{year}-{month}-{day}</h1>
       <div>
         <ul>
