@@ -5,11 +5,13 @@ import JwtPayload from '@renderer/jwt/JwtPayload';
 import Login from '@components/login/Login';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export type Students = Student[]
 
 export interface Student {
   fullName: string;
+  login: string,
 }
 
 export interface CourseDetails {
@@ -46,7 +48,6 @@ const Course = () => {
       });
 
       setCourseName(response.data.name);
-      console.log(response.data);
     };
 
     fetchCourseDetails();
@@ -78,7 +79,7 @@ const Course = () => {
       Students:
       <ul>
         {students.map((student, index) => (
-          <li key={index}>{student.fullName}</li>
+          <li key={index}><Link to={`/user/${student.login}`}>{student.fullName}</Link></li>
         ))}
       </ul>
     </div>

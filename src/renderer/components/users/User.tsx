@@ -5,6 +5,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useParams } from 'react-router';
 import Header from '@components/header/Header';
+import { Link } from 'react-router-dom';
 
 export interface UserInfo {
   fullName: string;
@@ -66,7 +67,7 @@ const User = () => {
 
   return (
     <div>
-      {role === 'ROLE_ADMIN' && (
+      {["ROLE_ADMIN", "ROLE_FACULTY"].includes(role) && (
         <div>
           <Header role={role} />
           <h1>{userFullName}</h1>
@@ -76,7 +77,7 @@ const User = () => {
               <p>Courses:</p>
               <ul>
                 {courses.map((course, index) => (
-                  <li key={index}>{course.code} -- {course.name}</li>
+                  <li key={index}><Link to={`/course/${course.code}`}>{course.code} -- {course.name}</Link></li>
                 ))}
               </ul>
             </div>)}
