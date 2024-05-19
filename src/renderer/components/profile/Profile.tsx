@@ -9,6 +9,7 @@ import axios from 'axios';
 export interface Profile {
   fullName: string
   role: string
+  faculty: string
   courses: Course[]
 }
 
@@ -24,6 +25,7 @@ const Profile = () => {
   const [profileFullName, setProfileFullName] = useState("");
   const [profileRole, setProfileRole] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
+  const [faculty, setFaculty] = useState("");
 
   useEffect(() => {
     const jwtRaw = window.localStorage.getItem("auth_token");
@@ -47,6 +49,7 @@ const Profile = () => {
       setProfileFullName(response.data.fullName);
       setProfileRole(response.data.role);
       setCourses(response.data.courses);
+      setFaculty(response.data.faculty);
       console.log(response);
     }
 
@@ -60,63 +63,21 @@ const Profile = () => {
   return (
     <div>
       <Header role={role} />
-      {role === "ROLE_STUDENT" && (
-        <div>
-          <h1><Link to={"/profile"}>{profileFullName}</Link></h1>
-          <div>Role: {profileRole}</div>
-          <div>Courses:</div>
-          <ul>
-            {courses.map((course, index) => (
-              <li key={index}>{course.code} -- {course.name}</li>
-            ))}
-            <li>CS100: Programming Principles II</li>
-          </ul>
-        </div>
-      )}
-
-      {role === "ROLE_ADMIN" && (
-        <div id="profile-admin-wrapper">
-          <h1><Link to={"/profile"}>Kiryuxa Bas</Link></h1>
-          <form action="/api/user/edit" method="POST">
-              <p>
-                Name: <input name="name" placeholder="Kiryuxa" required/>
-              </p>
-              <p>
-                Surname: <input name="surname" placeholder="Bas" required/>
-              </p>
-              <p>
-                Role: <input name="role" placeholder="student" required/><br />
-              </p>
-              <p>
-                Courses:
-                <ul>
-                  <li>CS100: Programming Principles II</li>
-                </ul>
-              </p>
-              <p>
-                <input type="submit" value="Send"/>
-              </p>
-          </form>
-        </div>
-      )}
-
-      {role === "ROLE_FACULTY" && (
-        <div>
-          <h1><Link to={"/profile"}>{profileFullName}</Link></h1>
-          <div>Role: {profileRole}</div>
-          {courses.length > 0 && (
-            <div>
-              <div>Courses:</div>
-              <ul>
-                {courses.map((course, index) => (
-                  <li key={index}>{course.code} -- {course.name}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
-
+      <h1><Link to={"/profile"}>{profileFullName}</Link></h1>
+      <div>
+        <div>Faculty: {faculty}</div>
+        <div>Role: {profileRole}</div>
+        {courses.length > 0 && (
+          <div>
+            <div>Courses:</div>
+            <ul>
+              {courses.map((course, index) => (
+                <li key={index}>{course.code} -- {course.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
