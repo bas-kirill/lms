@@ -72,6 +72,7 @@ const Dashboard = () => {
           <div>
             <h1>Welcome, {fullName}!</h1>
             <div id='faculty-dashboard-wrapper'>
+              <Calendar />
               <ActiveCourses />
             </div>
           </div>
