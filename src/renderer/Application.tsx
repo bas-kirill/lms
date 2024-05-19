@@ -7,6 +7,7 @@ import Profile from './components/profile/Profile';
 import Schedule from './components/schedule/Schedule';
 import Course from './components/course/Course';
 import Courses from '@components/courses/Courses';
+import User from '@components/users/User';
 
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const Application: React.FC = () => {
           <Route path="/schedule/:year/:month/:day" element={<Schedule />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/course/:courseCode" element={<Course />} />
+          <Route path="/user/:username" element={<User />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
