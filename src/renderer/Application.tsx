@@ -21,7 +21,7 @@ const Application: React.FC = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/schedule/:year/:month/:day" element={<Schedule />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/course/:code" element={<Course />} />
+          <Route path="/course/:courseCode" element={<Course />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
